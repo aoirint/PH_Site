@@ -1,0 +1,54 @@
+
+<form id="postForm" method="post" action="post.php">
+  <table>
+  <tr><td><label for="p">ID</label><td><input name="p" size="80">
+  <tr><td><label for="title">タイトル</label><td><input name="title" size="80">
+  <tr><td><label for="tags">タグ</label><td><input name="tags" size="80">
+  <input name="flags" type="hidden" size="80">
+  <tr><td><label for="contents">内容</label><td><textarea name="contents" cols="100" rows="30"></textarea>
+  </table>
+  
+  <p>
+  <input type="submit">
+</form>
+
+<script>
+  
+  $('#postForm').on('submit', function()
+  {
+    var flags = 0;
+    
+    $('#flagTable').find('[name^=f]').each(function()
+    {
+      var name = $(this).attr('name');
+      var nmMatch = name.match(/f(\d+)/);
+      var val = $(this).prop('checked') == true ? 1 : 0;
+      if (nmMatch) flags = flags | (val << (nmMatch[1] -1));
+    });
+    
+    $('#postForm').find('[name=flags]').val(flags);
+  });
+  
+
+</script>
+
+<table id="flagTable">
+<caption>フラグ</caption>
+<tr><td><input name="f1" type="checkbox"><td>ページ名にサイト名を含めない<td><input name="f17" type="checkbox"><td>MathJaxを有効化
+<tr><td><input name="f2" type="checkbox"><td>タイトルを出力しない<td><input name="f18" type="checkbox"><td>Markdownを有効化
+<tr><td><input name="f3" type="checkbox"><td>予約<td><input name="f19" type="checkbox"><td>予約
+<tr><td><input name="f4" type="checkbox"><td>予約<td><input name="f20" type="checkbox"><td>予約
+<tr><td><input name="f5" type="checkbox"><td>予約<td><input name="f21" type="checkbox"><td>予約
+<tr><td><input name="f6" type="checkbox"><td>予約<td><input name="f22" type="checkbox"><td>予約
+<tr><td><input name="f7" type="checkbox"><td>予約<td><input name="f23" type="checkbox"><td>予約
+<tr><td><input name="f8" type="checkbox"><td>予約<td><input name="f24" type="checkbox"><td>予約
+<tr><td><input name="f9" type="checkbox"><td>内容を相対URIとしてインクルード
+<tr><td><input name="f10" type="checkbox"><td>予約
+<tr><td><input name="f11" type="checkbox"><td>予約
+<tr><td><input name="f12" type="checkbox"><td>予約
+<tr><td><input name="f13" type="checkbox"><td>予約
+<tr><td><input name="f14" type="checkbox"><td>予約
+<tr><td><input name="f15" type="checkbox"><td>予約
+<tr><td><input name="f16" type="checkbox"><td>予約
+
+</table>
