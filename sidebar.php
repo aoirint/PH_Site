@@ -22,8 +22,8 @@
 		<li><a href="/ccc/">Index</a><!--
 		<li><a href="?mode=project">Project</a>
 		<li><a href="?mode=recent">Recent</a>
-		<li><a href="?mode=crowd">Crowd</a>
-		<li><a href="?mode=search">Search</a>-->
+		<li><a href="?mode=crowd">Crowd</a>-->
+		<li><a href="?p=search">Search</a>
 		<li><a href="?p=sitemap">Sitemap</a>
 	</ul>
 </nav>

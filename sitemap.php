@@ -20,7 +20,7 @@
 			
 				foreach ($splitedTag as $t):
     ?>
-    <a class="tag" href="?p=search&tag=<?= $t ?>"><?= $t ?></a>
+    <a class="tag" href="?p=search&tags=<?= $t ?>"><?= $t ?></a>
     <?php
         endforeach;
     ?>
