@@ -7,15 +7,9 @@
       $this->db = new SQLite3($dbFile);
     }
     
-    function listPage($tags=NULL)
+    function listPage()
     {
-      if ($tags !== NULL)
-      {
-        $result = $this->db->query('SELECT id,title,tags FROM pages WHERE tags=\''.SQLite3::escapeString($tags).'\'');
-      } else 
-      {
-        $result = $this->db->query('SELECT id,title,tags FROM pages');
-      }
+      $result = $this->db->query('SELECT id,title,tags FROM pages');
       
       $list = array();
       while ($page = $result->fetchArray(SQLITE3_ASSOC))
@@ -28,7 +22,9 @@
     
     function loadPage($id)
     {
-      $result = $this->db->query('SELECT * FROM pages WHERE id=\''.SQLite3::escapeString($id).'\'');
+      $stmt = $this->db->prepare('SELECT * FROM pages WHERE id=:id');
+      $stmt->bindValue(':id', $id, SQLITE3_TEXT);
+      $result = $stmt->execute();
       
       $page = $result->fetchArray(SQLITE3_ASSOC);
       
@@ -54,11 +50,19 @@
       if (! array_key_exists('flags', $page)) $page['flags'] = 0;
       if (! array_key_exists('contents', $page)) return FALSE;
       
-      $query = '\''.SQLite3::escapeString($page['id']).'\',\''.SQLite3::escapeString($page['title']).'\',\''.SQLite3::escapeString($page['tags']).'\','.$page['flags'].',\''.SQLite3::escapeString($page['contents']).'\'';
+      $del_stmt = $this->db->prepare('DELETE FROM pages WHERE id=:id');
+      $del_stmt->bindValue(':id', $page['id'], SQLITE3_TEXT);
       
-      $this->db->query('DELETE FROM pages WHERE id=\''.SQLite3::escapeString($page['id']).'\'');
+      $del_stmt->execute();
       
-      $this->db->query('INSERT INTO pages VALUES('.$query.')');
+      $ins_stmt = $this->db->prepare('INSERT INTO pages VALUES(:id, :title, :tags, :flags, :contents)');
+      $ins_stmt->bindValue(':id', $page['id'], SQLITE3_TEXT);
+      $ins_stmt->bindValue(':title', $page['title'], SQLITE3_TEXT);
+      $ins_stmt->bindValue(':tags', $page['tags'], SQLITE3_TEXT);
+      $ins_stmt->bindValue(':flags', $page['flags'], SQLITE3_INTEGER);
+      $ins_stmt->bindValue(':contents', $page['contents'], SQLITE3_TEXT);
+      
+      $ins_stmt->execute();
       
       return TRUE;
     }
